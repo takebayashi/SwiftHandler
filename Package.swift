@@ -1,10 +1,14 @@
-// swift-tools-version:3.1
+// swift-tools-version:4.0
 
 import PackageDescription
 
 let package = Package(
     name: "SwiftHandler",
     dependencies: [
-        .Package(url: "https://github.com/swift-server/http.git", majorVersion: 0, minor: 0),
+        .package(url: "https://github.com/swift-server/http.git", .branch("develop")),
+    ],
+    targets: [
+        .target(name: "SwiftHandler", dependencies: ["SwiftServerHTTP"]),
+        .testTarget(name: "SwiftHandlerTests", dependencies: ["SwiftHandler"]),
     ]
 )

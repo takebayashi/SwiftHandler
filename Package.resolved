@@ -20,12 +20,12 @@
         }
       },
       {
-        "package": "SwiftServerHttp",
+        "package": "SwiftServerHTTP",
         "repositoryURL": "https://github.com/swift-server/http.git",
         "state": {
-          "branch": null,
-          "revision": "66cc36f82336a2e2ed5540c9fbc56ff9c43c8609",
-          "version": "0.0.1"
+          "branch": "develop",
+          "revision": "fee570269557b124cf5d8a74affbe67a9d8d6a9d",
+          "version": null
         }
       }
     ]

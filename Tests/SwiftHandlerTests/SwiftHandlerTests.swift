@@ -15,23 +15,23 @@
  */
 
 import XCTest
-import SwiftServerHttp
+import HTTP
 @testable import SwiftHandler
 
 class SwiftHandlerTests: XCTestCase {
     func testSimpleHandler() {
-        let server = BlueSocketSimpleServer()
+        let server = HTTPServer()
         let handler = SimpleHandler { request, data in
-            let response = HTTPResponse(
+            let headers = HTTPHeaders()
+            var response = HTTPResponse(
                 httpVersion: request.httpVersion,
                 status: .ok,
-                transferEncoding: .identity(contentLength: UInt(data.count)),
-                headers: HTTPHeaders([])
+                headers: headers
             )
             return (response, data)
         }
         do {
-            try server.start(port: 0, webapp: handler)
+            try server.start(port: 0, handler: handler)
             let session = URLSession(configuration: URLSessionConfiguration.default)
             let expectation = self.expectation(description: "Handler should echo")
             var req = URLRequest(url: URL(string: "http://localhost:\(server.port)/")!)

@@ -15,11 +15,11 @@
  */
 
 import Foundation
-import SwiftServerHttp
+import HTTP
 
 public typealias Handler = (HTTPRequest, Data) -> (HTTPResponse, Data)
 
-public func SimpleHandler(handler: @escaping Handler) -> WebApp {
+public func SimpleHandler(handler: @escaping Handler) -> HTTPRequestHandler {
     return { (request: HTTPRequest, responseWriter: HTTPResponseWriter) -> HTTPBodyProcessing in
         var received = Data()
         return .processBody { (chunk, stop) in
@@ -32,9 +32,10 @@ public func SimpleHandler(handler: @escaping Handler) -> WebApp {
                 buffer.deallocate(capacity: data.count)
             case .end:
                 let (response, body) = handler(request, received)
-                responseWriter.writeResponse(response)
-                responseWriter.writeBody(data: body)
-                responseWriter.done()
+                responseWriter.writeHeader(status: response.status, headers: response.headers)
+                responseWriter.writeBody(body) { _ in
+                    responseWriter.done()
+                }
             default:
                 stop = true
                 responseWriter.abort()
